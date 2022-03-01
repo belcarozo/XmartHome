@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import { Pressable, View } from 'react-native'
+import React from 'react'
+import { Pressable } from 'react-native'
 import Animated, {
+  interpolate,
   interpolateColor,
   useAnimatedStyle,
   useSharedValue,
@@ -10,36 +11,29 @@ import Animated, {
 interface ToggleProps {}
 
 export const Toggle: React.FC<ToggleProps> = () => {
-  const [toggle, setToggle] = useState(0)
   const offset = useSharedValue(0)
   const size = useSharedValue(13)
   const style = useAnimatedStyle(() => {
     return {
       width: size.value,
       height: size.value,
-      transform: [{ translateX: offset.value }],
-      backgroundColor: interpolateColor(
-        offset.value,
-        [0, 13],
-        ['#DEEDF8', 'white'],
-      ),
+      transform: [{ translateX: interpolate(offset.value, [0, 1], [0, 13]) }],
     }
   })
   const backgroundStyle = useAnimatedStyle(() => {
     return {
       backgroundColor: interpolateColor(
         offset.value,
-        [0, 13],
-        ['#94BDD3', '#32958C'],
+        [0, 1],
+        ['#AED0D5', '#7EAE9F'],
       ),
     }
   })
   return (
     <Pressable
       onPress={() => {
-        setToggle(Math.abs(toggle - 1))
-        offset.value = withTiming(toggle ? 0 : 13)
-        size.value = withTiming(toggle ? 13 : 14)
+        offset.value = withTiming(offset.value ? 0 : 1)
+        size.value = withTiming(offset.value ? 13 : 14)
       }}>
       <Animated.View
         style={[
@@ -60,7 +54,10 @@ export const Toggle: React.FC<ToggleProps> = () => {
               width: 13,
               height: 13,
               shadowOpacity: 0.3,
-              shadowOffset: { width: 1, height: 0 },
+              shadowOffset: {
+                width: 1,
+                height: 0,
+              },
             },
             style,
           ]}></Animated.View>
