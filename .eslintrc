@@ -18,7 +18,6 @@
     "semi": ["off"],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "no-console": ["error", { "allow": ["warn"] }],
     "sort-keys": "error",
     "sort-imports": "off",
     "import/order": "off",

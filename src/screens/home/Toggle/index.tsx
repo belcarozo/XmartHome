@@ -25,7 +25,7 @@ export const Toggle: React.FC<ToggleProps> = () => {
       backgroundColor: interpolateColor(
         offset.value,
         [0, 1],
-        ['#AED0D5', '#7EAE9F'],
+        ['#92A4D8', '#2E4EFF'],
       ),
     }
   })
@@ -50,6 +50,7 @@ export const Toggle: React.FC<ToggleProps> = () => {
         <Animated.View
           style={[
             {
+              backgroundColor: 'white',
               borderRadius: 10,
               width: 13,
               height: 13,
