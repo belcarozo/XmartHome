@@ -1,7 +1,13 @@
-import { transform } from '@babel/core'
 import React, { useEffect, useState } from 'react'
-import { Button, Text, useWindowDimensions, View } from 'react-native'
+import {
+  Button,
+  StatusBar,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native'
 import Animated, {
+  useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -10,26 +16,32 @@ import Thermometer from '../../assets/icons/learn.svg'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from './styles'
 import { Widget, WidgetProps } from './Widget'
-import { FlatList } from 'react-native-gesture-handler'
+import { DragToSort } from './DragToSort'
+import {
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler'
+import { clamp } from 'react-native-redash'
 
 interface HomeProps {
   //props
 }
 
 export const Home: React.FC<HomeProps> = ({}) => {
-  const { width } = useWindowDimensions()
-  const widgetSize = width / 2 - 30
+  const { width, height } = useWindowDimensions()
+  // const widgetSize = width / 2 - 30
+  const widgetSize = width - 40
+  const activeCard = useSharedValue(-1)
+  const totalHeight = 120
   const [refresh, toggleRefresh] = useState(false)
   const data: WidgetProps[] = [
     {
-      height: widgetSize,
       width: widgetSize,
       refresh,
       Illustration: Thermometer,
       number: 26,
     },
     {
-      height: widgetSize,
       width: widgetSize,
       refresh,
       Illustration: Thermometer,
@@ -37,7 +49,6 @@ export const Home: React.FC<HomeProps> = ({}) => {
       backgroundColorImage: 'lavender',
     },
     {
-      height: widgetSize,
       width: widgetSize,
       refresh,
       Illustration: Thermometer,
@@ -45,7 +56,6 @@ export const Home: React.FC<HomeProps> = ({}) => {
       backgroundColorImage: '#FEE2FA',
     },
     {
-      height: widgetSize,
       width: widgetSize,
       refresh,
       Illustration: Thermometer,
@@ -53,8 +63,25 @@ export const Home: React.FC<HomeProps> = ({}) => {
       backgroundColorImage: '#C5E2DB',
     },
   ]
-  const renderItem = ({ item }: { item: WidgetProps }) => {
-    return <Widget {...item} />
+  const offsets = data.map((_, index) => ({
+    y: useSharedValue(totalHeight * index),
+  }))
+
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: WidgetProps
+    index: number
+  }) => {
+    return (
+      <Widget
+        {...item}
+        index={index}
+        activeCard={activeCard}
+        offsets={offsets}
+      />
+    )
   }
   const title = useSharedValue(0)
   useEffect(() => {
@@ -64,27 +91,21 @@ export const Home: React.FC<HomeProps> = ({}) => {
     opacity: title.value,
   }))
   return (
-    <SafeAreaView
-      style={{ backgroundColor: '#DDE3FF', flex: 1, paddingHorizontal: 20 }}>
+    <SafeAreaView style={{ backgroundColor: '#DDE3FF', flex: 1 }}>
+      <StatusBar barStyle={'dark-content'} />
       <Animated.View style={animatedStyle}>
         <Text
           style={{
             fontWeight: '200',
             fontSize: 24,
             color: '#072F50',
-            paddingVertical: 20,
+            marginHorizontal: 20,
+            paddingBottom: 20,
           }}>
           MY HOME
         </Text>
+        <DragToSort data={data} renderItem={renderItem} numColumns={1} />
       </Animated.View>
-      <FlatList
-        renderItem={renderItem}
-        data={data}
-        numColumns={2}
-        columnWrapperStyle={{
-          justifyContent: 'space-between',
-          marginBottom: 20,
-        }}></FlatList>
       <Button title={'Toggle'} onPress={() => toggleRefresh(!refresh)}></Button>
     </SafeAreaView>
   )
