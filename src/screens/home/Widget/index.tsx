@@ -187,7 +187,13 @@ export const Widget: React.FC<WidgetProps> = ({
               <Illustration />
             </Animated.View>
           )}
-          <PlusToCheck />
+          <View
+            style={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <PlusToCheck />
+          </View>
           <Toggle />
         </View>
         <View style={{ flexDirection: 'row' }}>
