@@ -27,8 +27,12 @@ interface HomeProps {
   //props
 }
 
-export const Home: React.FC<HomeProps> = ({}) => {
+export const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { width, height } = useWindowDimensions()
+  const onPress = () => {
+    // () => toggleRefresh(!refresh)
+    navigation.navigate('HomeScreen')
+  }
   // const widgetSize = width / 2 - 30
   const widgetSize = width - 40
   const activeCard = useSharedValue(-1)
@@ -106,7 +110,7 @@ export const Home: React.FC<HomeProps> = ({}) => {
         </Text>
         <DragToSort data={data} renderItem={renderItem} numColumns={1} />
       </Animated.View>
-      <Button title={'Toggle'} onPress={() => toggleRefresh(!refresh)}></Button>
+      <Button title={'Toggle'} onPress={onPress}></Button>
     </SafeAreaView>
   )
 }
