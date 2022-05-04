@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button, StatusBar, Text, useWindowDimensions } from 'react-native'
+import {
+  Button,
+  StatusBar,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native'
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -9,6 +15,8 @@ import Thermometer from '../../assets/icons/learn.svg'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Widget, WidgetProps } from './Widget'
 import { DragToSort } from './DragToSort'
+import { XL } from './XL'
+import { XL2 } from './XL2'
 
 interface HomeProps {
   //props
@@ -84,7 +92,7 @@ export const Home: React.FC<HomeProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ backgroundColor: '#DDE3FF', flex: 1 }}>
       <StatusBar barStyle={'dark-content'} />
-      <Animated.View style={animatedStyle}>
+      {/* <Animated.View style={animatedStyle}>
         <Text
           style={{
             fontWeight: '200',
@@ -96,7 +104,15 @@ export const Home: React.FC<HomeProps> = ({ navigation }) => {
           MY HOME
         </Text>
         <DragToSort data={data} renderItem={renderItem} numColumns={1} />
-      </Animated.View>
+      </Animated.View> */}
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <XL />
+      </View>
       <Button title={'Toggle'} onPress={onPress}></Button>
     </SafeAreaView>
   )

@@ -207,7 +207,6 @@ export const Widget: React.FC<WidgetProps> = ({
                 alignItems: 'center',
               }}>
               <PlusToCheck />
-              <XL />
             </View>
             <Toggle />
           </View>

@@ -49,18 +49,13 @@ export const XL: React.FC<XLProps> = () => {
   return (
     <Pressable
       style={{
-        backgroundColor: 'white',
-        height: 20,
-        width: 20,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: stroke,
-        borderWidth: 2,
-        padding: 10,
         borderRadius: 2,
       }}
       onPress={() => {
-        setStroke(checked.value ? '#2E4EFF' : '#92A4D8')
+        setStroke(checked.value ? '#ff197b' : '#92A4D8')
         checked.value = withTiming(checked.value ? 0 : 1)
       }}>
       {/* <X /> */}
