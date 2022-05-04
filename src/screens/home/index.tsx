@@ -1,27 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  StatusBar,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native'
+import { Button, StatusBar, Text, useWindowDimensions } from 'react-native'
 import Animated, {
-  useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
 import Thermometer from '../../assets/icons/learn.svg'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { styles } from './styles'
 import { Widget, WidgetProps } from './Widget'
 import { DragToSort } from './DragToSort'
-import {
-  PanGestureHandler,
-  PanGestureHandlerGestureEvent,
-} from 'react-native-gesture-handler'
-import { clamp } from 'react-native-redash'
 
 interface HomeProps {
   //props

@@ -5,19 +5,19 @@ import {
   Group,
   useClockValue,
   useFont,
-} from "@shopify/react-native-skia";
-import React from "react";
+} from '@shopify/react-native-skia'
+import React from 'react'
 
-import { COLS, ROWS, Symbol, SYMBOL } from "./Symbol";
+import { COLS, ROWS, Symbol, SYMBOL } from './Symbol'
 
-const cols = new Array(COLS).fill(0).map((_, i) => i);
-const rows = new Array(ROWS).fill(0).map((_, i) => i);
+const cols = new Array(COLS).fill(0).map((_, i) => i)
+const rows = new Array(ROWS).fill(0).map((_, i) => i)
 
 const randomArray = (from: number, to: number, blank?: boolean) => {
-  const size = Math.round(from + Math.random() * (to - from));
-  const a = new Array(size).fill(0).map((_, i) => (blank ? 0 : i / size));
-  return a.reverse();
-};
+  const size = Math.round(from + Math.random() * (to - from))
+  const a = new Array(size).fill(0).map((_, i) => (blank ? 0 : i / size))
+  return a.reverse()
+}
 
 const streams = cols.map(() =>
   new Array(3)
@@ -27,21 +27,21 @@ const streams = cols.map(() =>
       ...randomArray(4, 16),
       ...randomArray(2, 8, true),
     ])
-    .flat()
-);
+    .flat(),
+)
 
 export const Matrix = () => {
-  const clock = useClockValue();
-  const font = useFont(require("./matrix-code-nfi.otf"), SYMBOL.height);
+  const clock = useClockValue()
+  const font = useFont(require('./matrix-code-nfi.otf'), SYMBOL.height)
   if (font === null) {
-    return null;
+    return null
   }
-  const symbols = font.getGlyphIDs("abcdefghijklmnopqrstuvwxyz");
+  const symbols = font.getGlyphIDs('abcdefghijklmnopqrstuvwxyz')
   return (
     <Canvas style={{ flex: 1 }}>
       <Fill color="black" />
       <Group>
-        <BlurMask blur={8} style="solid" />
+        <BlurMask blur={3} style="normal" />
         {cols.map((_i, i) =>
           rows.map((_j, j) => (
             <Symbol
@@ -53,9 +53,9 @@ export const Matrix = () => {
               j={j}
               stream={streams[i]}
             />
-          ))
+          )),
         )}
       </Group>
     </Canvas>
-  );
-};
+  )
+}

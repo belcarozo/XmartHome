@@ -11,7 +11,7 @@ import {
 
 import { Title } from './components/Title'
 
-const card = require('../../../assets/logo.png')
+const card = require('../../../assets/belu_happy_rn.jpg')
 
 const { width } = Dimensions.get('window')
 const aspectRatio = 3057 / 5435

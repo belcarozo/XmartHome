@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { BlurMask, Canvas, Fill, vec } from '@shopify/react-native-skia'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import {
   PanGestureHandler,
@@ -7,7 +8,7 @@ import {
 import { SharedValue } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/reanimatedWrapper'
 import Animated, {
   interpolate,
-  runOnJS,
+  interpolateColor,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useDerivedValue,
@@ -16,10 +17,14 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import { ReText, snapPoint } from 'react-native-redash'
-import { SvgProps } from 'react-native-svg'
+import { Circle, SvgProps } from 'react-native-svg'
+import { LearnBook } from '../LearnBook'
 import { PlusToCheck } from '../PlusToCheck'
 
 import { Toggle } from '../Toggle'
+import { XL } from '../XL'
+import { XL2 } from '../XL2'
+import { XmartLabs } from '../XmartLabs'
 // import { styles } from './styles'
 
 export interface WidgetProps {
@@ -70,6 +75,12 @@ export const Widget: React.FC<WidgetProps> = ({
       prevPoint.value = offsets![index].y.value
       actualPoint.value = offsets![index].y.value
     },
+    onCancel: () => {
+      active.value = false
+    },
+    onFail: () => {
+      active.value = false
+    },
     onActive: ({ translationX, translationY, velocityX }, ctx) => {
       x.value = ctx.x + translationX
       y.value = ctx.y + translationY
@@ -118,12 +129,16 @@ export const Widget: React.FC<WidgetProps> = ({
       // )
     }
     return {
+      zIndex: activeCard.value === index ? 100 : -1,
       opacity: progress.value,
       shadowOffset: { height: withTiming(active.value ? 6 : 2), width: 0 },
       width: interpolate(progress.value, [0, 1], [width - 5, width]),
       height: interpolate(progress.value, [0, 1], [height - 5, height]),
-      zIndex: activeCard.value === index ? 100 : 1,
       position: 'absolute',
+      backgroundColor: withTiming(
+        interpolateColor(active.value ? 0 : 1, [0, 1], ['#ffffffcc', '#fff']),
+        { duration: 200 },
+      ),
       top: 0,
       left: 0,
       transform: [
@@ -134,7 +149,6 @@ export const Widget: React.FC<WidgetProps> = ({
       ],
     }
   })
-  const checked = useSharedValue(0)
   const imageStyle = useAnimatedStyle(() => ({
     opacity: progress.value,
     transform: [
@@ -149,63 +163,65 @@ export const Widget: React.FC<WidgetProps> = ({
   }, [refresh])
 
   return (
-    <PanGestureHandler onGestureEvent={onGestureEvent}>
-      <Animated.View
-        style={[
-          {
-            zIndex: index === 0 ? 101 : 1,
-            marginHorizontal: 20,
-            backgroundColor: 'white',
-            borderRadius: 17,
-            height,
-            width,
-            shadowOpacity: 0.1,
-            padding: 15,
-            justifyContent: 'space-between',
-          },
-          style,
-        ]}>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            height: 50,
-            justifyContent: 'space-between',
-          }}>
-          {Illustration && (
-            <Animated.View
-              style={[
-                {
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: 50,
-                  borderRadius: 30,
-                  backgroundColor: backgroundColorImage,
-                },
-                imageStyle,
-              ]}>
-              <Illustration />
-            </Animated.View>
-          )}
+    <>
+      <PanGestureHandler onGestureEvent={onGestureEvent}>
+        <Animated.View
+          style={[
+            {
+              marginHorizontal: 20,
+              backgroundColor: 'white',
+              borderRadius: 17,
+              height,
+              width,
+              shadowOpacity: 0.1,
+              padding: 15,
+              justifyContent: 'space-between',
+            },
+            style,
+          ]}>
           <View
             style={{
+              flexDirection: 'row',
+              width: '100%',
+              height: 50,
               justifyContent: 'space-between',
-              alignItems: 'center',
             }}>
-            <PlusToCheck />
+            {Illustration && (
+              <Animated.View
+                style={[
+                  {
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 50,
+                    borderRadius: 30,
+                    backgroundColor: backgroundColorImage,
+                  },
+                  imageStyle,
+                ]}>
+                <Illustration />
+              </Animated.View>
+            )}
+            <View
+              style={{
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <PlusToCheck />
+              <XL />
+            </View>
+            <Toggle />
           </View>
-          <Toggle />
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          <ReText
-            style={{
-              fontSize: 20,
-              color: '#072F50',
-              fontWeight: '200',
-            }}
-            text={text}></ReText>
-        </View>
-      </Animated.View>
-    </PanGestureHandler>
+          <View style={{ flexDirection: 'row' }}>
+            <ReText
+              style={{
+                fontSize: 20,
+                color: '#072F50',
+                fontWeight: '200',
+              }}
+              text={text}></ReText>
+          </View>
+        </Animated.View>
+      </PanGestureHandler>
+    </>
   )
 }
